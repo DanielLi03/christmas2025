@@ -28,17 +28,18 @@ font = pygame.font.SysFont("Verdana", 60)
 font_small = pygame.font.SysFont("Verdana", 20)
 game_over = font.render("Game Over", True, BLACK)
  
-background = pygame.image.load("AnimatedStreet.png")
+background = pygame.image.load("background.png")
  
 #Create a white screen 
-DISPLAYSURF = pygame.display.set_mode((400,600))
+DISPLAYSURF = pygame.display.set_mode((400,550))
 DISPLAYSURF.fill(WHITE)
 pygame.display.set_caption("Game")
  
 class Enemy(pygame.sprite.Sprite):
       def __init__(self):
         super().__init__() 
-        self.image = pygame.image.load("Enemy.png")
+        self.image = pygame.image.load("sunflowerseed.png")
+        self.image = pygame.transform.scale(self.image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.center = (random.randint(40, SCREEN_WIDTH-40), 0)  
  
@@ -54,7 +55,8 @@ class Enemy(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
-        self.image = pygame.image.load("Player.png")
+        self.image = pygame.image.load("hamster.png")
+        self.image = pygame.transform.scale(self.image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.center = (160, 520)
         
