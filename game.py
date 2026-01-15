@@ -35,7 +35,7 @@ DISPLAYSURF = pygame.display.set_mode((400,550))
 DISPLAYSURF.fill(WHITE)
 pygame.display.set_caption("Game")
  
-class Enemy(pygame.sprite.Sprite):
+class Sunflowerseed(pygame.sprite.Sprite):
       def __init__(self):
         super().__init__() 
         self.image = pygame.image.load("sunflowerseed.png")
@@ -76,11 +76,11 @@ class Player(pygame.sprite.Sprite):
                    
 #Setting up Sprites        
 P1 = Player()
-E1 = Enemy()
+E1 = Sunflowerseed()
  
 #Creating Sprites Groups
-enemies = pygame.sprite.Group()
-enemies.add(E1)
+seeds = pygame.sprite.Group()
+seeds.add(E1)
 all_sprites = pygame.sprite.Group()
 all_sprites.add(P1)
 all_sprites.add(E1)
@@ -109,8 +109,8 @@ while True:
         DISPLAYSURF.blit(entity.image, entity.rect)
         entity.move()
  
-    #To be run if collision occurs between Player and Enemy
-    if pygame.sprite.spritecollideany(P1, enemies):
+    #To be run if collision occurs between Player and Sunflower Seeds
+    if pygame.sprite.spritecollideany(P1, seeds):
           pygame.mixer.Sound('crash.wav').play()
           time.sleep(0.5)
                     
