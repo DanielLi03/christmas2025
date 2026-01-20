@@ -22,11 +22,12 @@ SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 600
 SPEED = 5
 SCORE = 0
+TOTAL = 0
+collision_happened = False
  
 #Setting up Fonts
 font = pygame.font.SysFont("Verdana", 60)
 font_small = pygame.font.SysFont("Verdana", 20)
-game_over = font.render("Game Over", True, BLACK)
  
 background = pygame.image.load("background.png")
  
@@ -45,9 +46,10 @@ class Sunflowerseed(pygame.sprite.Sprite):
  
       def move(self):
         global SCORE
+        global TOTAL
         self.rect.move_ip(0,SPEED)
         if (self.rect.top > 600):
-            SCORE += 1
+            TOTAL += 1
             self.rect.top = 0
             self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), 0)
  
@@ -69,10 +71,10 @@ class Player(pygame.sprite.Sprite):
          
         if self.rect.left > 0:
               if pressed_keys[K_LEFT]:
-                  self.rect.move_ip(-5, 0)
+                  self.rect.move_ip(-7, 0)
         if self.rect.right < SCREEN_WIDTH:        
               if pressed_keys[K_RIGHT]:
-                  self.rect.move_ip(5, 0)
+                  self.rect.move_ip(7, 0)
                    
 #Setting up Sprites        
 P1 = Player()
@@ -89,13 +91,17 @@ all_sprites.add(E1)
 INC_SPEED = pygame.USEREVENT + 1
 pygame.time.set_timer(INC_SPEED, 1000)
  
+#music
+pygame.mixer.music.load("nom.wav")
+pygame.mixer.music.play(-1)
+
 #Game Loop
 while True:
        
     #Cycles through all events occurring  
     for event in pygame.event.get():
         if event.type == INC_SPEED:
-              SPEED += 0.5     
+              SPEED += 0.2     
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
@@ -110,17 +116,25 @@ while True:
         entity.move()
  
     #To be run if collision occurs between Player and Sunflower Seeds
+    
     if pygame.sprite.spritecollideany(P1, seeds):
-          pygame.mixer.Sound('crash.wav').play()
-          time.sleep(0.5)
-                    
-          DISPLAYSURF.fill(RED)
+        if not collision_happened:
+            
+            SCORE += 1
+            collision_happened = True
+    else:
+        collision_happened = False
+    
+    if TOTAL >= 50:      
+          time.sleep(0.5)          
+          DISPLAYSURF.fill(GREEN)
+          game_over = font.render("Score: " + str(SCORE), True, BLACK)
           DISPLAYSURF.blit(game_over, (30,250))
            
           pygame.display.update()
           for entity in all_sprites:
                 entity.kill() 
-          time.sleep(2)
+          time.sleep(5)
           pygame.quit()
           sys.exit()        
          
